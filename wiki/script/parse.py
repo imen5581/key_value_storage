@@ -2,18 +2,13 @@ from bs4 import BeautifulSoup
 import lxml
 import unittest
 
+
 def parse(path_to_file):
-    # Поместите ваш код здесь.
-    # ВАЖНО!!!
-    # При открытии файла, добавьте в функцию open необязательный параметр
-    # encoding='utf-8', его отсутствие в коде будет вызвать падение вашего
-    # решения на грейдере с ошибкой UnicodeDecodeError
-    return [parse_count_amg(path_to_file), parse_count_header(path_to_file), parse_link_count(path_to_file)]
-    pass
+    return [parse_count_amg(path_to_file), parse_count_header(path_to_file), parse_link_count(path_to_file),
+            parse_ul_ol_count(path_to_file)]
 
 
 def parse_count_amg(path_to_file: str) -> int:
-
     """Считаем количество удовлетворяющих условию тегов img"""
     size_list = []
     count = 0
@@ -86,29 +81,40 @@ def parse_link_count(path_to_file: str) -> int:
     return result
 
 
+def parse_ul_ol_count(path_to_file: str) -> int:
+    soup = BeautifulSoup(open(path_to_file, encoding='utf-8'), 'lxml')
+    body = soup.find('div', attrs={'id': 'bodyContent'})
+    all_ul = body.find_all('ul')
+    all_ol = body.find_all('ol')
+    # print(all_ul)
+
+    count_ul, count_ol = 0, 0
+    for ul in all_ul:
+        if not (ul.find_parent(['ol', 'ul'])):
+            count_ul += 1
+    for ol in all_ol:
+        if not (ol.find_parent(['ol', 'ul'])):
+            count_ol += 1
+    result = count_ol + count_ul
+    print(result)
+    return result
 
 
 
-
-
-
-
-
-
-class TestParse(unittest.TestCase):
-    def test_parse(self):
-        test_cases = (
-            (r'C:\Users\Denis\Desktop\Скрипты\wiki\Stone_Age.html', [13, 10, 12]),
-            (r'C:\Users\Denis\Desktop\Скрипты\wiki\Brain.html', [19, 5, 25]),
-            (r'C:\Users\Denis\Desktop\Скрипты\wiki\Artificial_intelligence.html', [8, 19, 13]),
-            (r'C:\Users\Denis\Desktop\Скрипты\wiki\Python_(programming_language).html', [2, 5, 17]),
-            (r'C:\Users\Denis\Desktop\Скрипты\wiki\Spectrogram.html', [1, 2, 4]),)
-
-        for path, expected in test_cases:
-            with self.subTest(path=path, expected=expected):
-                self.assertEqual(parse(path), expected)
+# class TestParse(unittest.TestCase):
+#     def test_parse(self):
+#         test_cases = (
+#             (r'C:\Users\Denis\Desktop\Скрипты\wiki\Stone_Age.html', [13, 10, 12, 40]),
+#             (r'C:\Users\Denis\Desktop\Скрипты\wiki\Brain.html', [19, 5, 25, 11]),
+#             (r'C:\Users\Denis\Desktop\Скрипты\wiki\Artificial_intelligence.html', [8, 19, 13, 198]),
+#             (r'C:\Users\Denis\Desktop\Скрипты\wiki\Python_(programming_language).html', [2, 5, 17, 41]),
+#             (r'C:\Users\Denis\Desktop\Скрипты\wiki\Spectrogram.html', [1, 2, 4, 7]),)
+#
+#         for path, expected in test_cases:
+#             with self.subTest(path=path, expected=expected):
+#                 self.assertEqual(parse(path), expected)
 
 
 if __name__ == '__main__':
-    unittest.main()
-    #print(parse_link_count(r'C:\Users\Denis\Desktop\Скрипты\wiki\Akkadian.html'))
+    # unittest.main()
+     parse_ul_ol_count(r'C:\Users\Denis\Desktop\Скрипты\wiki\Artificial_intelligence.html')
