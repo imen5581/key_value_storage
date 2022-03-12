@@ -101,18 +101,18 @@ def parse_ul_ol_count(path_to_file: str) -> int:
 
 
 
-# class TestParse(unittest.TestCase):
-#     def test_parse(self):
-#         test_cases = (
-#             (r'C:\Users\Denis\Desktop\Скрипты\wiki\Stone_Age.html', [13, 10, 12, 40]),
-#             (r'C:\Users\Denis\Desktop\Скрипты\wiki\Brain.html', [19, 5, 25, 11]),
-#             (r'C:\Users\Denis\Desktop\Скрипты\wiki\Artificial_intelligence.html', [8, 19, 13, 198]),
-#             (r'C:\Users\Denis\Desktop\Скрипты\wiki\Python_(programming_language).html', [2, 5, 17, 41]),
-#             (r'C:\Users\Denis\Desktop\Скрипты\wiki\Spectrogram.html', [1, 2, 4, 7]),)
-#
-#         for path, expected in test_cases:
-#             with self.subTest(path=path, expected=expected):
-#                 self.assertEqual(parse(path), expected)
+class TestParse(unittest.TestCase):
+    def test_parse(self):
+        test_cases = (
+            (r'C:\Users\Denis\Desktop\Скрипты\wiki\Stone_Age.html', [13, 10, 12, 40]),
+            (r'C:\Users\Denis\Desktop\Скрипты\wiki\Brain.html', [19, 5, 25, 11]),
+            (r'C:\Users\Denis\Desktop\Скрипты\wiki\Artificial_intelligence.html', [8, 19, 13, 198]),
+            (r'C:\Users\Denis\Desktop\Скрипты\wiki\Python_(programming_language).html', [2, 5, 17, 41]),
+            (r'C:\Users\Denis\Desktop\Скрипты\wiki\Spectrogram.html', [1, 2, 4, 7]),)
+
+        for path, expected in test_cases:
+            with self.subTest(path=path, expected=expected):
+                self.assertEqual(parse(path), expected)
 
 
 if __name__ == '__main__':
